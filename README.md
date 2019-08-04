@@ -6,6 +6,12 @@ This makes the Connect IQ SDK available as a Nix expression.
 Notes
 -----
 
+The official [Getting Started](https://developer.garmin.com/connect-iq/programmers-guide/getting-started/)
+documentation has details about generating the developer key.
+
+Their [Programmer's Guide](https://developer.garmin.com/connect-iq/programmers-guide/)
+has pointers about getting started, in addition to an API doc.
+
 ### Building something
 
 ```
