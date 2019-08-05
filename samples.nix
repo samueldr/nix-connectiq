@@ -7,6 +7,9 @@ let
       inherit pname;
       src = "${connectiq.sdk}/share/connectiq-sdk/samples/${pname}";
       version = connectiq.sdk.version;
+      meta = {
+        license = connectiq.sdk.meta.license;
+      };
     }
   ;
 in

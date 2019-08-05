@@ -77,4 +77,12 @@ stdenv.mkDerivation rec {
       fi
     done
   '';
+
+  meta = {
+    license = {
+      fullName = "Connect IQ License Agreement";
+      url = "https://developer.garmin.com/connect-iq/license-agreement/";
+      free = false;
+    };
+  };
 }
