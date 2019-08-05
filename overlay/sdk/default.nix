@@ -12,6 +12,12 @@
 , xlibs
 , libjpeg
 , libpng
+
+# Configuration
+, beta ? false
+, sdkver
+, revision
+, sha256
 }:
 
 let
@@ -23,12 +29,10 @@ in
 stdenv.mkDerivation rec {
   pname = "connectiq-sdk";
   version = "${sdkver}-${revision}";
-  sdkver = "3.0.12";
-  revision = "2019-06-12-77ed6f47e";
 
   src = fetchurl {
-    url = "https://developer.garmin.com/downloads/connect-iq/sdks/connectiq-sdk-lin-${version}.zip";
-    sha256 = "0pc1vgfm3gdw0bc06602k78q658r4x9144nvaidqnagn7iaq9b86";
+    url = "https://developer.garmin.com/downloads/connect-iq${if beta then "/beta" else ""}/sdks/connectiq-sdk-lin-${version}.zip";
+    inherit sha256;
   };
 
   unpackPhase = ''
