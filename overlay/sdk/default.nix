@@ -6,7 +6,6 @@
 , autoPatchelfHook
 
 # autoPatchelfHook libraries
-, gcc-unwrapped
 , libusb1
 , zlib
 , webkitgtk24x-gtk2
@@ -48,7 +47,6 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    gcc-unwrapped.lib
     libusb1
     zlib
     webkitgtk24x-gtk2
@@ -75,8 +73,4 @@ stdenv.mkDerivation rec {
       fi
     done
   '';
-
-  passthru = {
-    inherit sdkpath;
-  };
 }
