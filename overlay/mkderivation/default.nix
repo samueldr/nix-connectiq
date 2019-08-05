@@ -1,9 +1,10 @@
 { stdenvNoCC, sdk }:
 
-{ pname, ... } @args:
+{ pname, version, ... } @args:
 
 stdenvNoCC.mkDerivation ({
-  inherit pname;
+  inherit pname version;
+  name = "${pname}-${version}";
 
   phases = [
     "unpackPhase"
