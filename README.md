@@ -1,4 +1,4 @@
-Connect IQ SDK for Nix
+[Connect IQ SDK](https://developer.garmin.com/connect-iq) for Nix
 ======================
 
 This makes the Connect IQ SDK available as a Nix expression.
