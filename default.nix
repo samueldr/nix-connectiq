@@ -10,4 +10,4 @@
   }
 }:
 
-pkgs.connectiq.sdk
+pkgs.connectiq
