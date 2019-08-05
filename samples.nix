@@ -4,7 +4,7 @@ let
   inherit (pkgs.lib.attrsets) genAttrs;
   buildSample = pname:
     connectiq.mkDerivation {
-      inherit pname;
+      pname = "connectiq-sdk-sample-${pname}";
       src = "${connectiq.sdk}/share/connectiq-sdk/samples/${pname}";
       version = connectiq.sdk.version;
       meta = {
