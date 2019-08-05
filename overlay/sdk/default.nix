@@ -3,7 +3,6 @@
 , jdk8
 , unzip
 , runtimeShell
-, writeScript
 , autoPatchelfHook
 
 # autoPatchelfHook libraries
@@ -58,34 +57,23 @@ stdenv.mkDerivation rec {
     libpng
   ];
 
-  installPhase =
-    let
-      mkShim = binary: ''
-        echo "Adding a shim for '${binary}'"
-        cat > $out/bin/${binary} <<EOF
-        #${runtimeShell}
-        SDK="$sdkpath"
-        PATH="${binPath}:$PATH"
-        exec $sdkpath/bin/${binary} "\$@"
-        EOF
-        chmod +x $out/bin/${binary}
-      '';
-    in
-  ''
+  installPhase = ''
     mkdir -p $sdkpath
     rmdir $sdkpath
     mv sdk $sdkpath
 
     mkdir -p $out/bin
-    ${mkShim "barrelbuild"}
-    ${mkShim "barreltest"}
-    ${mkShim "connectiq"}
-    ${mkShim "connectiqpkg"}
-    ${mkShim "monkeyc"}
-    ${mkShim "monkeydo"}
-    ${mkShim "monkeygraph"}
-    ${mkShim "shell"}
-    ${mkShim "simulator"}
+    for f in $sdkpath/bin/*; do
+      if test -x $f; then
+        echo "Adding a shim for '$f'"
+    cat > "$out/bin/$(basename $f)" <<EOF
+    #${runtimeShell}
+    PATH="${binPath}:$PATH"
+    exec "$f" "\$@"
+    EOF
+        chmod +x "$out/bin/$(basename $f)"
+      fi
+    done
   '';
 
   passthru = {
