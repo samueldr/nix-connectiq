@@ -1,4 +1,5 @@
 { stdenv
+, lib
 , fetchurl
 , jdk8
 , unzip
@@ -78,11 +79,14 @@ stdenv.mkDerivation rec {
     done
   '';
 
-  meta = {
+  meta = with lib; {
+    description = "Connect IQ SDK";
+    homepage = "https://developer.garmin.com/connect-iq-sdk/";
     license = {
       fullName = "Connect IQ License Agreement";
       url = "https://developer.garmin.com/connect-iq/license-agreement/";
       free = false;
     };
+    platforms = platforms.linux;
   };
 }
