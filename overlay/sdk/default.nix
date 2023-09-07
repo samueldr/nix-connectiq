@@ -5,6 +5,7 @@
 , unzip
 , runtimeShell
 , autoPatchelfHook
+, openssl
 
 # autoPatchelfHook libraries
 , libusb1
@@ -25,6 +26,9 @@ let
   binPath = lib.makeBinPath [
     openjdk
   ];
+  # XXX
+  # /build/.Garmin/ConnectIQ/Devices
+  devicesDir = "/nix/store/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee-TODO";
 in
 stdenv.mkDerivation rec {
   pname = "connectiq-sdk";
@@ -48,6 +52,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [
     unzip
     autoPatchelfHook
+    openssl
   ];
 
   buildInputs = [
@@ -76,6 +81,26 @@ stdenv.mkDerivation rec {
         chmod +x "$out/bin/$(basename $f)"
       fi
     done
+  '';
+
+  postFixup = ''
+    echo ":: Generating default.jungle"
+    (PS4=" $ "
+    set -x
+    cp -r ${sdkpath}/samples/Attention tmp
+    cd tmp
+    openssl genrsa -out developer_key.pem 4096
+    openssl pkcs8 -topk8 -inform PEM -outform DER -in developer_key.pem -out developer_key.der -nocrypt
+    $out/bin/monkeyc -y developer_key.der -f monkey.jungle -o Attention.prg &>/dev/null || :
+    )
+    rm -rf tmp
+
+    echo ":: Fixing-up default.jungle"
+    (
+    cd ${sdkpath}/bin
+    substituteInPlace default.jungle \
+      --replace '/build/.Garmin/ConnectIQ/Devices' "${devicesDir}"
+    )
   '';
 
   meta = with lib; {
