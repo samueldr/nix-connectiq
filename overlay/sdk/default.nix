@@ -1,6 +1,7 @@
 { stdenv
+, lib
 , fetchurl
-, jdk8
+, openjdk
 , unzip
 , runtimeShell
 , autoPatchelfHook
@@ -8,8 +9,8 @@
 # autoPatchelfHook libraries
 , libusb1
 , zlib
-, webkitgtk24x-gtk2
-, xlibs
+, webkitgtk
+, xorg
 , libjpeg
 , libpng
 
@@ -21,9 +22,8 @@
 }:
 
 let
-  inherit (stdenv.lib) makeBinPath;
-  binPath = makeBinPath [
-    jdk8
+  binPath = lib.makeBinPath [
+    openjdk
   ];
 in
 stdenv.mkDerivation rec {
@@ -53,8 +53,8 @@ stdenv.mkDerivation rec {
   buildInputs = [
     libusb1
     zlib
-    webkitgtk24x-gtk2
-    xlibs.libXxf86vm
+    webkitgtk
+    xorg.libXxf86vm
     libjpeg
     libpng
   ];
@@ -78,11 +78,14 @@ stdenv.mkDerivation rec {
     done
   '';
 
-  meta = {
+  meta = with lib; {
+    description = "Connect IQ SDK";
+    homepage = "https://developer.garmin.com/connect-iq-sdk/";
     license = {
       fullName = "Connect IQ License Agreement";
       url = "https://developer.garmin.com/connect-iq/license-agreement/";
       free = false;
     };
+    platforms = platforms.linux;
   };
 }
